@@ -12,7 +12,6 @@ interface ISentiment {
   sentiment: string;
 }
 
-// Headers untuk VDataTable
 const headers = ref<VDataTableHeader[]>([
   {
     value: 'index',
@@ -28,7 +27,6 @@ const headers = ref<VDataTableHeader[]>([
   },
 ]);
 
-// Skema validasi
 const schema = object({
   review: string().required().label('Ulasan'),
 });
@@ -37,7 +35,6 @@ const { handleSubmit, resetForm, errors, values } = useForm({
   validationSchema: schema,
 });
 
-const reviews = ref<ISentiment[]>([]);
 const sentimentStore = useSentimentStore();
 const alertMessage = ref<String>('');
 const isShowAlert = ref<Boolean>(false);
@@ -59,7 +56,7 @@ const onSubmit = handleSubmit(async (formValues) => {
         review: reviewText,
         sentiment: sentimentStore.sentiment,
       };
-      reviews.value.push(newReview);
+      sentimentStore.reviews.push(newReview);
     } else if (sentimentStore.error) {
       alertMessage.value = sentimentStore.error;
       isShowAlert.value = true;
@@ -76,7 +73,7 @@ const onSubmit = handleSubmit(async (formValues) => {
 });
 
 const handleResetTable = () => {
-  reviews.value = [];
+  sentimentStore.reviews = [];
   isOpen.value = false;
 };
 
@@ -94,7 +91,9 @@ const calculateSentimentDistribution = (
 };
 
 watchEffect(() => {
-  sentimentDistribution.value = calculateSentimentDistribution(reviews.value);
+  sentimentDistribution.value = calculateSentimentDistribution(
+    sentimentStore.reviews
+  );
 });
 </script>
 <template>
@@ -129,7 +128,7 @@ watchEffect(() => {
                 :positif="sentimentDistribution.positif"
                 :netral="sentimentDistribution.netral"
               />
-              <div>
+              <VList>
                 <VListItem hide-prepend>
                   <p class="text-gray-800 text-sm font-bold">Positif :</p>
                   <template #append>
@@ -154,7 +153,7 @@ watchEffect(() => {
                     </p>
                   </template>
                 </VListItem>
-              </div>
+              </VList>
             </VModal>
             <VModal hide-x-button v-model="isOpen">
               <template #activator="{open}">
@@ -173,7 +172,7 @@ watchEffect(() => {
         <div class="grid">
           <VDataTable
             hide-footer
-            :items="reviews"
+            :items="sentimentStore.reviews"
             :headers="headers"
             items-per-page="100"
           />
@@ -186,13 +185,14 @@ watchEffect(() => {
         <h1 class="text-3xl font-bold text-gray-800 mb-4">
           Analisis Sentimen
         </h1>
-        <VAlert
+        <VToast
           v-model="isShowAlert"
-          dismissable
           :color="sentimentStore.error ? 'error' : 'success'"
+          placement="bottom-end"
+          :timeout="3000"
         >
           {{ alertMessage }}
-        </VAlert>
+        </VToast>
         <form @submit.prevent="onSubmit">
           <VTextarea
             label="Ulasan"

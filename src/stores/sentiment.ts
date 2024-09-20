@@ -1,22 +1,27 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
+interface ISentiment {
+  review: string;
+  sentiment: string;
+}
 interface SentimentState {
   sentiment: string;
   loading: boolean;
   error: string | null;
+  reviews: ISentiment[];
 }
 
 interface SentimentResponse {
   sentiment: string;
 }
 
-// Create the Pinia store with TypeScript
 export const useSentimentStore = defineStore('sentiment', {
   state: (): SentimentState => ({
     sentiment: '',
     loading: false,
     error: null,
+    reviews: [],
   }),
   actions: {
     async fetchSentiment(text: string) {
