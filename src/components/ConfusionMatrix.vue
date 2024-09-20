@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 const confusionMatrix = reactive({
-  negatif: { negatif: 3207, netral: 0, positif: 72 },
-  netral: { negatif: 178, netral: 0, positif: 8 },
-  positif: { negatif: 256, netral: 0, positif: 279 },
+  negatif: { negatif: 3152, netral: 1, positif: 41 },
+  netral: { negatif: 178, netral: 0, positif: 6 },
+  positif: { negatif: 263, netral: 0, positif: 260 },
 });
 </script>
 
