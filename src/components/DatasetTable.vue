@@ -22,7 +22,7 @@ const headers = ref<VDataTableHeader[]>([
 ]);
 </script>
 <template>
-  <VDataTable :items="data" :headers="headers" items-per-page="10">
+  <VDataTable :items="data" :headers="headers" :items-per-page="10">
     <template #item.content="{item}">
       <div class="whitespace-pre-wrap">{{ item.content }}</div>
     </template>
