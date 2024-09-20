@@ -5,38 +5,38 @@ const rows = ref([
   {
     class: 'negatif',
     precision: '0.88',
-    recall: '0.98',
+    recall: '0.99',
     f1_score: '0.93',
-    support: '3279',
+    support: '3194',
   },
   {
     class: 'netral',
     precision: '0.00',
     recall: '0.00',
     f1_score: '0.00',
-    support: '186',
+    support: '184',
   },
   {
     class: 'positif',
-    precision: '0.78',
-    recall: '0.52',
-    f1_score: '0.62',
-    support: '535',
+    precision: '0.85',
+    recall: '0.50',
+    f1_score: '0.63',
+    support: '523',
   },
 ]);
 
 const accuracy = ref('0.87');
 const macro_avg = ref({
-  precision: '0.55',
-  recall: '0.50',
+  precision: '0.57',
+  recall: '0.49',
   f1_score: '0.52',
-  support: '4000',
+  support: '3901',
 });
 const weighted_avg = ref({
   precision: '0.83',
   recall: '0.87',
   f1_score: '0.84',
-  support: '4000',
+  support: '3901',
 });
 </script>
 
