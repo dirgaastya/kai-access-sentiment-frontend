@@ -4,6 +4,8 @@ import type { VDataTableHeader } from '@morpheme/table';
 import { useForm } from 'vee-validate';
 import { object, string } from 'yup';
 import { useSentimentStore } from '@/stores/sentiment';
+import { watchEffect } from 'vue';
+import ChartLabel from '@/components/ChartLabel.vue';
 
 interface ISentiment {
   review: string;
@@ -40,6 +42,8 @@ const sentimentStore = useSentimentStore();
 const alertMessage = ref<String>('');
 const isShowAlert = ref<Boolean>(false);
 const isOpen = ref<Boolean>(false);
+const isDetailOpen = ref<Boolean>(false);
+const sentimentDistribution = ref({} as Record<string, number>);
 
 const onSubmit = handleSubmit(async (formValues) => {
   const reviewList = formValues.review
@@ -75,6 +79,23 @@ const handleResetTable = () => {
   reviews.value = [];
   isOpen.value = false;
 };
+
+const calculateSentimentDistribution = (
+  data: ISentiment[]
+): Record<string, number> => {
+  return data.reduce((acc, item) => {
+    if (acc[item.sentiment]) {
+      acc[item.sentiment]++;
+    } else {
+      acc[item.sentiment] = 1;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+};
+
+watchEffect(() => {
+  sentimentDistribution.value = calculateSentimentDistribution(reviews.value);
+});
 </script>
 <template>
   <div class="py-9">
@@ -84,25 +105,79 @@ const handleResetTable = () => {
           <h1 class="text-3xl font-bold text-gray-800">
             Daftar Sentimen Ulasan
           </h1>
-          <VModal hide-x-button v-model="isOpen">
-            <template #activator="{open}">
-              <VBtn @click="open" size="sm" text color="error">Reset</VBtn>
-            </template>
-            <template #footer="{close}">
-              <VBtn color="error" size="sm" no-ring @click="handleResetTable"
-                >Reset</VBtn
-              >
-              <VBtn size="sm" no-ring @click="close">Close</VBtn>
-            </template>
-            Anda yakin untuk menghapus daftar sentimen ulasan?
-          </VModal>
+          <div class="flex items-center">
+            <VModal hide-x-button v-model="isDetailOpen">
+              <template #activator="{open}">
+                <VIcon
+                  @click="open"
+                  name="hugeicons:information-circle"
+                  class="cursor-pointer"
+                />
+              </template>
+              <template #header>
+                <p class="text-gray-800 text-xl font-bold">
+                  Distribusi Sentimen
+                </p>
+              </template>
+              <template #footer="{close}">
+                <VBtn size="sm" no-ring color="error" @click="close"
+                  >Close</VBtn
+                >
+              </template>
+              <ChartLabel
+                :negatif="sentimentDistribution.negatif"
+                :positif="sentimentDistribution.positif"
+                :netral="sentimentDistribution.netral"
+              />
+              <div>
+                <VListItem hide-prepend>
+                  <p class="text-gray-800 text-sm font-bold">Positif :</p>
+                  <template #append>
+                    <p class="text-gray-800 text-sm">
+                      {{ sentimentDistribution.positif || 0 }}
+                    </p>
+                  </template>
+                </VListItem>
+                <VListItem hide-prepend>
+                  <p class="text-gray-800 text-sm font-bold">Negatif :</p>
+                  <template #append>
+                    <p class="text-gray-800 text-sm">
+                      {{ sentimentDistribution.negatif || 0 }}
+                    </p>
+                  </template>
+                </VListItem>
+                <VListItem hide-prepend>
+                  <p class="text-gray-800 text-sm font-bold">Netral :</p>
+                  <template #append>
+                    <p class="text-gray-800 text-sm">
+                      {{ sentimentDistribution.netral || 0 }}
+                    </p>
+                  </template>
+                </VListItem>
+              </div>
+            </VModal>
+            <VModal hide-x-button v-model="isOpen">
+              <template #activator="{open}">
+                <VBtn @click="open" size="sm" text color="error">Reset</VBtn>
+              </template>
+              <template #footer="{close}">
+                <VBtn color="error" size="sm" no-ring @click="handleResetTable"
+                  >Reset</VBtn
+                >
+                <VBtn size="sm" no-ring @click="close">Close</VBtn>
+              </template>
+              Anda yakin untuk menghapus daftar sentimen ulasan?
+            </VModal>
+          </div>
         </div>
-        <VDataTable
-          hide-footer
-          :items="reviews"
-          :headers="headers"
-          items-per-page="100"
-        />
+        <div class="grid">
+          <VDataTable
+            hide-footer
+            :items="reviews"
+            :headers="headers"
+            items-per-page="100"
+          />
+        </div>
         <p class="text-sm text-gray-500 mt-3">
           Catatan: Daftar ulasan hanya akan tersedia selama sesi ini.
         </p>

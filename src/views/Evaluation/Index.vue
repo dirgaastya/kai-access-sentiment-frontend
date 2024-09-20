@@ -19,7 +19,7 @@ import WordCloud from '@/components/WordCloud.vue';
             <ModelPerformance />
           </VCard>
           <VCard title="Distribusi Data" shadow="xl" body-class="!pt-8">
-            <ChartLabel />
+            <ChartLabel :negatif="16317" :positif="2704" :netral="979" />
             <template #footer>
               <VListItem hide-prepend>
                 <p class="text-gray-800 text-sm font-bold">Jumlah data :</p>

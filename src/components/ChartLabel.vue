@@ -11,6 +11,19 @@ import {
   LinearScale,
 } from 'chart.js';
 
+const props = withDefaults(
+  defineProps<{
+    negatif: number;
+    positif: number;
+    netral: number;
+  }>(),
+  {
+    negatif: 0,
+    positif: 0,
+    netral: 0,
+  }
+);
+
 ChartJS.register(
   Title,
   Tooltip,
@@ -24,21 +37,21 @@ const chartData = ref({
   datasets: [
     {
       label: 'Sentimen Positif',
-      data: [2704],
+      data: [props.positif],
       backgroundColor: ['#FF6384'],
       borderColor: ['#FF6384'],
       borderWidth: 1,
     },
     {
       label: 'Sentimen Negatif',
-      data: [16317],
+      data: [props.negatif],
       backgroundColor: ['#36A2EB'],
       borderColor: ['#36A2EB'],
       borderWidth: 1,
     },
     {
       label: 'Sentimen Netral',
-      data: [979],
+      data: [props.netral],
       backgroundColor: ['#FFCE56'],
       borderColor: ['#FFCE56'],
       borderWidth: 1,
