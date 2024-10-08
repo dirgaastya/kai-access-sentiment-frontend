@@ -13,7 +13,9 @@ interface SentimentState {
 }
 
 interface SentimentResponse {
+  message: string;
   sentiment: string;
+  status: string;
 }
 
 export const useSentimentStore = defineStore('sentiment', {

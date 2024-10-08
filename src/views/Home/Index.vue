@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="py-20">
+  <div class="py-20 h-[80vh]">
     <div class="container mx-auto px-4">
       <div class="flex flex-col lg:flex-row items-center">
         <div class="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0">

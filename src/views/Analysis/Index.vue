@@ -97,7 +97,7 @@ watchEffect(() => {
 });
 </script>
 <template>
-  <div class="py-9">
+  <div class="py-9 min-h-[80vh]">
     <div class="flex items-start gap-x-12">
       <div class="w-1/2">
         <div class="flex items-end justify-between mb-6">
