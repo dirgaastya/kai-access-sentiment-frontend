@@ -4,22 +4,22 @@ import { ref } from 'vue';
 const modelPerfomanceItems = ref([
   {
     text: 'Akurasi',
-    value: '87.46%',
+    value: '87.59%',
     icon: 'gg:performance',
   },
   {
     text: 'Precision',
-    value: '83.18%',
+    value: '83.29%',
     icon: 'icon-park-twotone:performance',
   },
   {
     text: 'Recall',
-    value: '87.46%',
+    value: '87.59%',
     icon: 'akar-icons:arrow-cycle',
   },
   {
     text: 'F1-Score',
-    value: '84.45%',
+    value: '84.60%',
     icon: 'material-symbols-light:readiness-score-outline',
   },
 ]);

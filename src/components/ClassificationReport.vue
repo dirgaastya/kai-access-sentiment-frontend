@@ -25,17 +25,17 @@ const rows = ref([
   },
 ]);
 
-const accuracy = ref('0.87');
+const accuracy = ref('0.88');
 const macro_avg = ref({
-  precision: '0.57',
-  recall: '0.49',
+  precision: '0.58',
+  recall: '0.50',
   f1_score: '0.52',
   support: '3901',
 });
 const weighted_avg = ref({
   precision: '0.83',
-  recall: '0.87',
-  f1_score: '0.84',
+  recall: '0.88',
+  f1_score: '0.85',
   support: '3901',
 });
 </script>
